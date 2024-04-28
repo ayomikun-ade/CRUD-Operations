@@ -40,14 +40,30 @@ app.post("/api/books", (req, res) => {
   res.json(newBook);
 });
 
+//edit book byt its id
 app.put("/api/books/:id", (req, res) => {
-  const id = req.params.id;
-  res.json({ message: "Success" });
+  const id = parseInt(req.params.id);
+  const book = books.find((book) => book.id === id);
+  if (book) {
+    book.title = req.body.title;
+    book.author = req.body.author;
+    res.json(book);
+  } else {
+    res.status(404).json({ message: "Book not found" });
+  }
 });
 
+//delete book by its id
 app.delete("/api/books/:id", (req, res) => {
-  const id = req.params.id;
-  res.json({ message: "Success" });
+  const id = parseInt(req.params.id);
+  const index = books.findIndex((book) => book.id === id);
+  if (index !== -1) {
+    //remove particular book based on id from the array
+    books.splice(index, 1);
+    res.json({ message: "Book deleted successfully" });
+  } else {
+    res.status(404).json({ message: "Book not found" });
+  }
 });
 
 app.listen(PORT, () => {
