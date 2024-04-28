@@ -17,6 +17,7 @@ app.get("/api/books", (req, res) => {
   res.json(books);
 });
 
+//get a single book by its id
 app.get("/api/books/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const book = books.find((book) => book.id === id);
@@ -27,8 +28,16 @@ app.get("/api/books/:id", (req, res) => {
   }
 });
 
+//post request to add a new book
 app.post("/api/books", (req, res) => {
-  res.json({ message: "Success" });
+  const newBook = {
+    id: books.length + 1,
+    title: req.body.title,
+    author: req.body.author,
+  };
+  //adding to the books array
+  books.push(newBook);
+  res.json(newBook);
 });
 
 app.put("/api/books/:id", (req, res) => {
